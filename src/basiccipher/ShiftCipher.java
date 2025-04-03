@@ -35,9 +35,7 @@ public class ShiftCipher {
 			int index = 0;
 			int alp_len = LATIN_ALP.length;
 			boolean found = false;
-			if (!found) {
-				sb.append(c);
-			}
+			
 			for (int i = 0; i < alp_len; i++) {
 				if (LATIN_ALP[i] == c) {
 					found = true;
@@ -46,13 +44,43 @@ public class ShiftCipher {
 
 				}
 			}
+			if (!found) {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+	
+	public String decrypt(String text) {
+		StringBuilder sb = new StringBuilder();
+		if (text == null || text.length() == 0)
+			return "please put some longer text.";
+
+		for (char c : text.toLowerCase().toCharArray()) {
+			int index = 0;
+			int alp_len = LATIN_ALP.length;
+			boolean found = false;
+			
+			for (int i = 0; i < alp_len; i++) {
+				if (LATIN_ALP[i] == c) {
+					found = true;
+					index = (26-key+i) % 26;
+					sb.append(LATIN_ALP[index]);
+
+				}
+			}
+			if (!found) {
+				sb.append(c);
+			}
 		}
 		return sb.toString();
 	}
 
 	public static void main(String[] args) {
 		ShiftCipher s = new ShiftCipher();
-		String plainText = "Joan is my friend";
-		System.out.println(s.encrypt(plainText));
+		String plainText = "Dear sister, by the time you read this, I'll be dead.";
+		String ec=s.encrypt(plainText);
+		String dc= s.decrypt(ec);
+		System.out.println(dc);
 	}
 }
